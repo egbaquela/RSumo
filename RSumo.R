@@ -109,3 +109,16 @@ setClass("trafficRoutes",
 trafficNet <- function(name, path, vehicleTypes, routes, vehicles){
   new("trafficRoutes", name = name, path = path, vehicleTypes=vehicleTypes, routes=routes, vehicles = vehicles)  
 }
+
+setClass("trafficModels",
+  representation(
+    name = "character",
+    path = "character",
+    net = "trafficNet",
+    routes = "trafficRoutes"   
+  )
+)
+
+trafficModels <- function(name, path, net, routes){
+  new("trafficModels", name = name, path = path, net=net, routes=routes)  
+}
