@@ -3,7 +3,7 @@
 #
 #
 ###################################################
-
+ 
 setClass("adminRSumo",
   representation(
     sumoBinPath = "character" # Path to sumo.exe and others
