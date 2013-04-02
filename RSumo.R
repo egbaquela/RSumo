@@ -25,6 +25,22 @@ setMethod("openSumoGUI", "adminRSumo",
   } 
 )
 
+setGeneric("runSimulationFromCfg", function(object, pathCFG, activeGUI=FALSE){})
+
+setMethod("runSimulationFromCfg", "adminRSumo",
+  function(object, pathCFG, activeGUI=FALSE){
+    if (activeGUI){
+      sumo<-"sumo-gui.exe"
+    }
+    else{
+      sumo<-"sumo.exe"
+    }
+    shell(paste(object@sumoBinPath, sumo," -c ","\"",pathCFG,"\"",sep=""))    
+  }
+
+)
+
+
 # Class for models
 
 setClass("trafficNodes",
