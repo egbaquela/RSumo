@@ -7,16 +7,23 @@
 # Sumo Manager
 setClass("adminRSumo",
   representation(
-    sumoBinPath = "character", # Path to sumo.exe and others
-    name ="character" # Instance name           
+    name ="character", # Instance name 
+    sumoBinPath = "character" # Path to sumo.exe and others    
   )
 )
 
 # Constructor
-adminRSumo <- function(sumoBinPath, name){
-  new("adminRSumo", sumoBinPath = sumoBinPath, name = name)
+adminRSumo <- function(name, sumoBinPath){
+  new("adminRSumo",  name = name, sumoBinPath = sumoBinPath)
 }
 
+setGeneric("openSumoGUI", function(object){})
+
+setMethod("openSumoGUI", "adminRSumo", 
+  function(object){
+    shell(paste(object@sumoBinPath, "sumo-gui.exe", sep=""))  
+  } 
+)
 
 # Class for models
 
