@@ -4,7 +4,7 @@
 #
 ###################################################
  
-# Sumo Manager
+############## Sumo Manager########################
 setClass("adminRSumo",
   representation(
     name ="character", # Instance name 
@@ -41,7 +41,7 @@ setMethod("runSimulationFromCfg", "adminRSumo",
 )
 
 
-# Class for models
+############ Class for models########################
 
 setClass("trafficNodes",
   representation(
