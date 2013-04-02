@@ -40,6 +40,25 @@ setMethod("runSimulationFromCfg", "adminRSumo",
 
 )
 
+setGeneric("runSimulationFromFiles", function(object, pathNet, pathRoute, endTime, activeGUI=FALSE){})
+
+setMethod("runSimulationFromFiles", "adminRSumo",
+  function(object, pathNet, pathRoute, endTime, activeGUI=FALSE){
+    if (activeGUI){
+      sumo<-"sumo-gui.exe"
+    }
+    else{
+      sumo<-"sumo.exe"
+    }
+    command <- paste(object@sumoBinPath, sumo,sep="") 
+    command <- paste(command," --net-file=\"",pathNet, "\"", sep="")
+    command <- paste(command," --route-files=\"",pathRoute, "\"", sep="")
+    command <- paste(command, " --time-to-teleport=\"-1\"", sep="")
+    command <- paste(command, " --end=\"", endTime, "\"", sep="")
+    shell(command)    
+  }
+          
+)
 
 ############ Class for models########################
 
