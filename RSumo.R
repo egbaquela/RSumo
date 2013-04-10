@@ -37,13 +37,16 @@ setMethod("runSimulationFromCfg", "adminRSumo",
     }
     shell(paste(object@sumoBinPath, sumo," -c ","\"",pathCFG,"\"",sep=""))    
   }
-
 )
 
-setGeneric("runSimulationFromFiles", function(object, pathNet, pathRoute, endTime, activeGUI=FALSE){})
+setGeneric("runSimulationFromFiles", function(object, pathNet, pathRoute, endTime, activeGUI=FALSE,
+  pathOutputs=NA, reportTripInfo = FALSE, reportVehRoute = FALSE,
+  reportSummary = FALSE){})
 
 setMethod("runSimulationFromFiles", "adminRSumo",
-  function(object, pathNet, pathRoute, endTime, activeGUI=FALSE){
+  function(object, pathNet, pathRoute, endTime, activeGUI=FALSE, 
+    pathOutputs=NA, reportTripInfo = FALSE, reportVehRoute = FALSE,
+    reportSummary = FALSE){
     if (activeGUI){
       sumo<-"sumo-gui.exe"
     }
@@ -55,9 +58,20 @@ setMethod("runSimulationFromFiles", "adminRSumo",
     command <- paste(command," --route-files=\"",pathRoute, "\"", sep="")
     command <- paste(command, " --time-to-teleport=\"-1\"", sep="")
     command <- paste(command, " --end=\"", endTime, "\"", sep="")
+    if (!is.na(pathOutputs)){
+      if (reportTripInfo){
+        command <- paste(command, " --tripinfo-output=\"", pathOutputs, "trips.trip.xml\"", sep="")
+      }
+      if (reportVehRoute){
+        command <- paste(command, " --vehroute-output=\"", pathOutputs, "vehRoute.vehr.xml\"", sep="")
+      }    
+      if (reportSummary){
+        command <- paste(command, " --summary=\"", pathOutputs, "summary.summ.xml\"", sep="")
+      }      
+    }
+   
     shell(command)    
-  }
-          
+  }        
 )
 
 ############ Class for models########################
