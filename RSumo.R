@@ -4,6 +4,9 @@
 #
 ###################################################
  
+library("XML")
+
+
 ############## Sumo Manager########################
 setClass("adminRSumo",
   representation(
@@ -73,6 +76,20 @@ setMethod("runSimulationFromFiles", "adminRSumo",
     shell(command)    
   }        
 )
+
+############ Read of Sumo XML files #################
+
+leerXML <- function(path){
+  myXml <- newXMLDoc()
+  myXml <-xmlRoot(xmlParse(path))
+  myXmlAttr <- xmlApply(myXml, xmlAttrs)
+  attrDataFrame <- t(as.data.frame(myXmlAttr))
+  attrDataFrame <- as.data.frame(attrDataFrame)
+}
+
+############ Read of Sumo XML files #################
+
+
 
 ############ Class for models########################
 
