@@ -79,7 +79,7 @@ setMethod("runSimulationFromFiles", "adminRSumo",
 
 ############ Read of Sumo XML files #################
 
-leerXML <- function(path){
+readSumoXML <- function(path){
   myXml <- newXMLDoc()
   myXml <-xmlRoot(xmlParse(path))
   myXmlAttr <- xmlApply(myXml, xmlAttrs)
@@ -88,6 +88,7 @@ leerXML <- function(path){
 }
 
 ############ Read of Sumo XML files #################
+
 
 
 
