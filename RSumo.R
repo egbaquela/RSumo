@@ -77,6 +77,24 @@ setMethod("runSimulationFromFiles", "adminRSumo",
   }        
 )
 
+setGeneric("generateNetFromCFG", function(object, pathCFG){})
+
+#Cambiar netgen por netgenerate
+setMethod("generateNetFromCFG", "adminRSumo", 
+          function(object, pathCFG){
+            shell(paste(object@sumoBinPath, "netgen.exe"," -c=\"", pathCFG,\"", sep=""))  
+          } 
+)
+
+setGeneric("generateRandomNet", function(object, iterations, pathOutput){})
+
+#Cambiar netgen por netgenerate
+setMethod("generateRandomNet", "adminRSumo", 
+          function(object,  iterations, pathOutput){
+            shell(paste(object@sumoBinPath, "netgen.exe"," --random-net --rand-iterations=", iterations, " -o=\"",pathOutput,"\"", sep=""))  
+          } 
+)
+
 ############ Read of Sumo XML files #################
 
 xmlNodesAttrToDataFrame <- function(xmlNode){
