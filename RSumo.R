@@ -82,7 +82,7 @@ setGeneric("generateNetFromCFG", function(object, pathCFG){})
 #Cambiar netgen por netgenerate
 setMethod("generateNetFromCFG", "adminRSumo", 
           function(object, pathCFG){
-            shell(paste(object@sumoBinPath, "netgen.exe"," -c=\"", pathCFG,\"", sep=""))  
+            shell(paste(object@sumoBinPath, "netgen.exe"," -c=\"", pathCFG,"\"", sep=""))  
           } 
 )
 
@@ -92,6 +92,14 @@ setGeneric("generateRandomNet", function(object, iterations, pathOutput){})
 setMethod("generateRandomNet", "adminRSumo", 
           function(object,  iterations, pathOutput){
             shell(paste(object@sumoBinPath, "netgen.exe"," --random-net --rand-iterations=", iterations, " -o=\"",pathOutput,"\"", sep=""))  
+          } 
+)
+
+setGeneric("generateRandomTrips", function(object, pathNet, pathOutput, beginTime, endTime){})
+
+setMethod("generateRandomTrips", "adminRSumo", 
+          function(object, pathNet, pathOutput, beginTime, endTime){
+            shell(paste(object@sumoBinPath, "duarouter.exe"," -n=\"", pathNet,"\""," -o=\"", pathOutput,"\""," -b=", beginTime," -e=", endTime, " -R=0.1", sep=""))  
           } 
 )
 
@@ -133,6 +141,21 @@ readOutputVehRouteFile <- function(path){
   vehRoute$arrival <- as.numeric(as.character(vehRoute$arrival)) 
   vehRoute
 }
+
+readOutputSummaryFile <- function(path){
+  summaryOutput <- readSumoXML(path)  
+  summaryOutput$time <- as.numeric(as.character(vehRoute$time))
+  summaryOutput$loaded <- as.numeric(as.character(vehRoute$loaded)) 
+  summaryOutput$emitted <- as.numeric(as.character(vehRoute$emitted)) 
+  summaryOutput$running <- as.numeric(as.character(vehRoute$running))  
+  summaryOutput$waiting <- as.numeric(as.character(vehRoute$waiting))  
+  summaryOutput$ended <- as.numeric(as.character(vehRoute$ended))  
+  summaryOutput$meanWaitingTime <- as.numeric(as.character(vehRoute$meanWaitingTime))  
+  summaryOutput$meanTravelTime <- as.numeric(as.character(vehRoute$meanTravelTime))  
+  summaryOutput$duration <- as.numeric(as.character(vehRoute$duration))  
+  summaryOutput
+}
+
 
 ############ Read TSPLIB XML Models #################
 
