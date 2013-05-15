@@ -144,15 +144,15 @@ readOutputVehRouteFile <- function(path){
 
 readOutputSummaryFile <- function(path){
   summaryOutput <- readSumoXML(path)  
-  summaryOutput$time <- as.numeric(as.character(vehRoute$time))
-  summaryOutput$loaded <- as.numeric(as.character(vehRoute$loaded)) 
-  summaryOutput$emitted <- as.numeric(as.character(vehRoute$emitted)) 
-  summaryOutput$running <- as.numeric(as.character(vehRoute$running))  
-  summaryOutput$waiting <- as.numeric(as.character(vehRoute$waiting))  
-  summaryOutput$ended <- as.numeric(as.character(vehRoute$ended))  
-  summaryOutput$meanWaitingTime <- as.numeric(as.character(vehRoute$meanWaitingTime))  
-  summaryOutput$meanTravelTime <- as.numeric(as.character(vehRoute$meanTravelTime))  
-  summaryOutput$duration <- as.numeric(as.character(vehRoute$duration))  
+  summaryOutput$time <- as.numeric(as.character(summaryOutput$time))
+  summaryOutput$loaded <- as.numeric(as.character(summaryOutput$loaded)) 
+  summaryOutput$emitted <- as.numeric(as.character(summaryOutput$emitted)) 
+  summaryOutput$running <- as.numeric(as.character(summaryOutput$running))  
+  summaryOutput$waiting <- as.numeric(as.character(summaryOutput$waiting))  
+  summaryOutput$ended <- as.numeric(as.character(summaryOutput$ended))  
+  summaryOutput$meanWaitingTime <- as.numeric(as.character(summaryOutput$meanWaitingTime))  
+  summaryOutput$meanTravelTime <- as.numeric(as.character(summaryOutput$meanTravelTime))  
+  summaryOutput$duration <- as.numeric(as.character(summaryOutput$duration))  
   summaryOutput
 }
 
