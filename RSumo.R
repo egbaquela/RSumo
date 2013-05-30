@@ -203,16 +203,22 @@ trafficNodes <- function(name, path, nodes){
   new("trafficNodes", name = name, path = path, nodes = nodes)  
 }
 
-setClass("trafficEdges",
+setClass("trafficEdge",
   representation(
-    name = "character",
-    path = "character",
-    edges = "data.frame"
+    id = "character",
+    from = "character",
+    to = "character"
+    priority = "integer"
+    edgeFunction = "character" # Cambiar a factor
+    length = "double"
+    lanes = "lanes"
   )
 )
 
-trafficEdges <- function(name, path, edges){
-  new("trafficEdges", name = name, path = path, edges = edges)  
+trafficEdges <- function(id, from, to, priority=1,edgeFunction="normal", 
+                         length=NA, lanes=NA){
+  new("trafficEdges", id=id, from=from, to=to, priority=priority,
+      edgeFunction=edgeFunction, length=length, lanes=lanes)  
 }
 
 setClass("trafficNet",
