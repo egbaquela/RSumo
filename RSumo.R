@@ -191,16 +191,30 @@ readTSPLIBModel <- function(path){
 
 ############ Class for models #######################
 
-setClass("trafficNodes",
+setClass("trafficNode",
   representation(
-    name = "character",
-    path = "character",
-    nodes = "data.frame"
+    id = "character",
+    x = "double",
+    y = "double"
   )
 )
 
-trafficNodes <- function(name, path, nodes){
-  new("trafficNodes", name = name, path = path, nodes = nodes)  
+trafficNode <- function(id, x, y){
+  new("trafficNodes", id = id, x = x, y = y)  
+}
+
+setClass("trafficLane",
+         representation(
+           id = "character",
+           index = "integer",
+           speed = "double"
+           length = "double"
+           # ver como modelar el atributo shape
+         )
+)
+
+trafficLane <- function(id, index, speed, length=NA){
+  new("trafficLane", id=id, index=index, speed=speed, length=length)  
 }
 
 setClass("trafficEdge",
@@ -215,9 +229,9 @@ setClass("trafficEdge",
   )
 )
 
-trafficEdges <- function(id, from, to, priority=1,edgeFunction="normal", 
+trafficEdge <- function(id, from, to, priority=1,edgeFunction="normal", 
                          length=NA, lanes=NA){
-  new("trafficEdges", id=id, from=from, to=to, priority=priority,
+  new("trafficEdge", id=id, from=from, to=to, priority=priority,
       edgeFunction=edgeFunction, length=length, lanes=lanes)  
 }
 
