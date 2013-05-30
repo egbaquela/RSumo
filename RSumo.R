@@ -1,10 +1,11 @@
 ###################################################
+# 
 # Modulo para conectividad con SUMO
-#
 #
 ###################################################
  
-library("XML")
+require("XML")
+require(stats)
 
 
 ############## Sumo Manager########################
@@ -95,11 +96,23 @@ setMethod("generateRandomNet", "adminRSumo",
           } 
 )
 
-setGeneric("generateRandomTrips", function(object, pathNet, pathOutput, beginTime, endTime){})
+setGeneric("generateRandomTrips", 
+           function(object, pathNet, pathOutput, generateRoute = TRUE, 
+                    tripPrefix = "t", tripParams=NA, beginTime=0, endTime=3600, 
+                    period=1,seed=NA, lengthWeigth=NA, lanesWeigth=NA,
+                    speedWeigth=NA, fringeFactor=1, fringeThreshold=NA,
+                    min-distance=0){})
 
 setMethod("generateRandomTrips", "adminRSumo", 
-          function(object, pathNet, pathOutput, beginTime, endTime){
-            shell(paste(object@sumoBinPath, "duarouter.exe"," -n=\"", pathNet,"\""," -o=\"", pathOutput,"\""," -b=", beginTime," -e=", endTime, " -R=0.1", sep=""))  
+          function(object, pathNet, pathOutput, generateRoute = TRUE, 
+                   tripPrefix = "t", tripParams=NA, beginTime=0, endTime=3600, 
+                   period=1,seed=NA, lengthWeigth=NA, lanesWeigth=NA,
+                   speedWeigth=NA, fringeFactor=1, fringeThreshold=NA,
+                   min-distance=0){
+            # Versión anterior, llamaba a DUAROUTER, pero genera errores
+            # shell(paste(object@sumoBinPath, "duarouter.exe"," -n=\"", pathNet,"\""," -o=\"", pathOutput,"\""," -b=", beginTime," -e=", endTime, " -R=0.1", sep="")) 
+            if (!is.na(seed)){set.seed(seed)} 
+            # Pendiente: DESARROLLAR LECTURA DE ARCHIVOS .net para asignar trips
           } 
 )
 
