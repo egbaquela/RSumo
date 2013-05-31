@@ -1,4 +1,4 @@
-requiere("readSumoXML.R")
+#requiere("readSumoXML.R")
 
 readOutputTripFile <- function(path){
   tripFile <- readSumoXML(path)

@@ -1,6 +1,6 @@
-requiere("trafficNode.R")
-requiere("trafficLane.R")
-requiere("trafficEdge.R")
+#requiere("trafficNode.R")
+#requiere("trafficLane.R")
+#requiere("trafficEdge.R")
 
 setClass("trafficNet",
          representation(

@@ -1,4 +1,4 @@
-requiere("trafficLane.R")
+#requiere("trafficLane.R")
 
 setClass("trafficEdge",
          representation(

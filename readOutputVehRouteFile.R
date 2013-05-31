@@ -1,4 +1,4 @@
-requiere("readSumoXML.R")
+#requiere("readSumoXML.R")
 
 readOutputVehRouteFile <- function(path){
   vehRoute <- readSumoXML(path)  

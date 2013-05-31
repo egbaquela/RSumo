@@ -1,4 +1,4 @@
-requiere("readSumoXML.R")
+#requiere("readSumoXML.R")
 
 readOutputSummaryFile <- function(path){
   summaryOutput <- readSumoXML(path)  

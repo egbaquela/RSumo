@@ -23,18 +23,6 @@ setClass("trafficNode",
                           incLanes=character())
 )
 
-trafficNode <- function(id, type, x, y){
+trafficNode <- function(id, type="node", x, y){
   new("trafficNode", id = id, type = type, x = x, y = y)  
 }
-
-setGeneric("read.csv", function(object,file, header = TRUE, 
-                                sep = ",", quote="\"", dec=".",
-                                fill = TRUE, comment.char="", ...){})
-
-setMethod("read.csv", "trafficNode", 
-          function(object,file, header = TRUE, 
-                   sep = ",", quote="\"", dec=".",
-                   fill = TRUE, comment.char="", ...){
-            shell(paste(object@sumoBinPath, "sumo-gui.exe", sep=""))  
-          } 
-)

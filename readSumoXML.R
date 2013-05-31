@@ -1,4 +1,5 @@
 ############ Read of Sumo XML files #################
+require("XML")
 
 xmlNodesAttrToDataFrame <- function(xmlNode){
   myXmlAttr <- xmlApply(xmlNode, xmlAttrs)
