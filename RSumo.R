@@ -191,71 +191,12 @@ readTSPLIBModel <- function(path){
 
 ############ Class for models #######################
 
-setClass("trafficNode",
-  representation(
-    id = "character",
-    x = "double",
-    y = "double"
-  )
-)
-
-trafficNode <- function(id, x, y){
-  new("trafficNodes", id = id, x = x, y = y)  
-}
-
-setClass("trafficLane",
-         representation(
-           id = "character",
-           index = "integer",
-           speed = "double"
-           length = "double"
-           # ver como modelar el atributo shape
-         )
-)
-
-trafficLane <- function(id, index, speed, length=NA){
-  new("trafficLane", id=id, index=index, speed=speed, length=length)  
-}
-
-setClass("trafficEdge",
-  representation(
-    id = "character",
-    from = "character",
-    to = "character"
-    priority = "integer"
-    edgeFunction = "character" # Cambiar a factor
-    length = "double"
-    lanes = "lanes"
-  )
-)
-
-trafficEdge <- function(id, from, to, priority=1,edgeFunction="normal", 
-                         length=NA, lanes=NA){
-  new("trafficEdge", id=id, from=from, to=to, priority=priority,
-      edgeFunction=edgeFunction, length=length, lanes=lanes)  
-}
-
-setClass("trafficNet",
-  representation(
-    name = "character",
-    path = "character",
-    net = "data.frame",
-    nodes = "trafficNodes",
-    edges = "trafficEdges"
-  )
-)
-
-trafficNet <- function(name, path, net, nodes, edges){
-  new("trafficEdges", name = name, path = path, net=net, nodes=nodes, edges = edges)  
-}
-
-
 setClass("vehicleTypes",
-  representation(
-    name = "character",
-    path = "character",
-    types = "data.frame"
-  )
+         representation(
+           name = "character",
+           path = "character",
+           types = "data.frame"
+         )
 )
 
 vehicleTypes <- function(name, path, types){
@@ -297,7 +238,7 @@ setClass("trafficRoutes",
   )
 )
 
-trafficNet <- function(name, path, vehicleTypes, routes, vehicles){
+trafficRoutes <- function(name, path, vehicleTypes, routes, vehicles){
   new("trafficRoutes", name = name, path = path, vehicleTypes=vehicleTypes, routes=routes, vehicles = vehicles)  
 }
 
