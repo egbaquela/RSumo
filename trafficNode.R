@@ -11,6 +11,8 @@ setClass("trafficNode",
            incLanes = "character"
            # Definir bien la implementación de foes y prohibits,
            # ver node.py
+           # El procedimiento getLinkIndex se puede utilizar filtrando incoming
+           # Ver que hace el método forbids
          ),
          prototype = list(id=character(),
                           type=character(),
