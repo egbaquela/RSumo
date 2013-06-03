@@ -42,6 +42,21 @@ setMethod("runSimulationFromCfg", "adminRSumo",
   }
 )
 
+setGeneric("runSimulationFromParams", function(object, params, activeGUI=FALSE){})
+
+setMethod("runSimulationFromParams", "adminRSumo",
+          function(object, pathCFG, activeGUI=FALSE){
+            if (activeGUI){
+              sumo<-"sumo-gui.exe"
+            }
+            else{
+              sumo<-"sumo.exe"
+            }
+            shell(paste(object@sumoBinPath, sumo," ",pathCFG,sep=""))    
+          }
+)
+
+
 setGeneric("runSimulationFromFiles", function(object, pathNet, pathRoute, endTime, activeGUI=FALSE,
   pathOutputs=NA, reportTripInfo = FALSE, reportVehRoute = FALSE,
   reportSummary = FALSE){})
