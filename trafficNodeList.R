@@ -7,7 +7,8 @@ setClass("trafficNodeList",
            nodes = "vector"
          ),
          prototype = list(id=character(),
-                          nodes=vector())
+                          nodes=vector()
+                          )
 )
 
 trafficNodeList <- function(id, nodes){
