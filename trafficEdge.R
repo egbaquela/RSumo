@@ -19,6 +19,7 @@ setClass("trafficEdge",
                           speed = numeric(),
                           length = numeric(),
                           lanes = vector()
+         )
 )
 
 trafficEdge <- function(id, from, to, priority=1,edgeFunction="normal", 

@@ -16,6 +16,7 @@ setClass("trafficLane",
                           shape = character(),
                           outgoing = character(),
                           params = character()
+                          )
 )
 
 trafficLane <- function(id, index, speed, length=NA, 

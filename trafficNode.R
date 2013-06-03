@@ -22,7 +22,8 @@ setClass("trafficNode",
                           outgoing = character(),
                           foes = character(),
                           prohibits = character(),                          
-                          incLanes=character())
+                          incLanes=character()
+                          )
 )
 
 trafficNode <- function(id, type="node", x, y){
