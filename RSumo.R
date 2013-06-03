@@ -45,14 +45,14 @@ setMethod("runSimulationFromCfg", "adminRSumo",
 setGeneric("runSimulationFromParams", function(object, params, activeGUI=FALSE){})
 
 setMethod("runSimulationFromParams", "adminRSumo",
-          function(object, pathCFG, activeGUI=FALSE){
+          function(object, params, activeGUI=FALSE){
             if (activeGUI){
               sumo<-"sumo-gui.exe"
             }
             else{
               sumo<-"sumo.exe"
             }
-            shell(paste(object@sumoBinPath, sumo," ",pathCFG,sep=""))    
+            shell(paste(object@sumoBinPath, sumo," ",params,sep=""))    
           }
 )
 
