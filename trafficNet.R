@@ -3,18 +3,33 @@ setClass("trafficNet",
            id = "character",
            nodes = "data.frame",
            edges = "data.frame",
+           lanes = "data.frame",
            edgeTypes = "data.frame",
            connections = "data.frame"
          ),
          prototype = list(id=character(),
                           nodes = data.frame(),
                           edges = data.frame(),
+                          lanes = data.frame(),
                           edgeTypes = data.frame(),
                           connections = data.frame()
          )
 )
 
-trafficConnection <- function(id, fromEdge, toEdge, fromLane, toLane){
-  new("trafficConnection", id = id, fromEdge=fromEdge, toEdge=toEdge, 
-      fromLane=fromLane, toLane=toLane)  
+trafficNet <- function(id){
+  object <- new("trafficNet", id = id) 
+  
+  nodes <- data.frame(c("-"),c("normal"),c(0.0), c(0.0)) 
+  names(nodes) <- c("id", "type", "x", "y")
+  object@nodes <- nodes
+  
+  edgeTypes <- data.frame(c("-"),c(0),c(0), c(0.0)) 
+  names(edgeTypes) <- c("id", "priority", "numLanes", "speed")
+  object@edgeTypes <- edgeTypes  
+  
+  connections <- data.frame(c("-"),c("-"),c("-"), c("-"),c("-")) 
+  names(connections) <- c("id", "fromEdge", "toEdge", "fromLane", "toLane")
+  object@connections <- connections
+  
+  object
 }
