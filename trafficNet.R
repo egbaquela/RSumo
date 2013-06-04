@@ -34,12 +34,12 @@ trafficNet <- function(id){
   connections <- data.frame(c("-"),c("-"),c("-"), c("-"),c("-")) 
   names(connections) <- c("id", "fromEdge", "toEdge", "fromLane", "toLane")
   object@connections <- connections
+
+  edges <- data.frame(c("-"),c("-"),c("-"), c("-"),c(1),
+                      c("-"),c(0.0), c(0.0)) 
+  names(edges) <- c("id", "from", "to", "type", "priority", 
+                    "edgeFunction", "speed", "length")
+  object@edges <- edges  
   
   object
 }
-
-id = "character",
-index = "numeric",
-speed = "numeric",
-length = "numeric",
-shape = "character",
