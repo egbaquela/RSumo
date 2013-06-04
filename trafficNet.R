@@ -1,3 +1,5 @@
+#requiere("trafficNodeList.R")
+
 setClass("trafficNet",
          representation(
            id = "character",
@@ -43,3 +45,32 @@ trafficNet <- function(id){
   
   object
 }
+
+setGeneric("appendNode", function(object, id, type, x,y){})
+
+setMethod("appendNode", "trafficNet", 
+          function(object, id, type, x,y){
+            node <- data.frame(id, type, x, y)
+            object@nodes <- rbind(object@nodes, node)
+            object  
+          }
+)
+
+setGeneric("addNodesFromFile", function(object, path, append=FALSE){})
+
+setMethod("addNodesFromFile", "trafficNet", 
+          function(object, path){
+            nodes <- readSumoXML(path) 
+            nodes$id <- as.character(nodes$id)
+            nodes$type <- as.character(nodes$type)
+            nodes$x <- as.numeric(as.character(nodes$x))
+            nodes$y <- as.numeric(as.character(nodes$y))
+            if (append){
+              object@nodes <- nodes             
+            }
+            else{
+              object@nodes <- rbind(object@nodes, nodes)
+            }
+            object
+          }
+)
