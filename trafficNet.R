@@ -47,7 +47,6 @@ trafficNet <- function(id){
 }
 
 setGeneric("appendNode", function(object, id, type, x,y){})
-
 setMethod("appendNode", "trafficNet", 
           function(object, id, type, x,y){
             node <- data.frame(id, type, x, y)
@@ -57,7 +56,6 @@ setMethod("appendNode", "trafficNet",
 )
 
 setGeneric("addNodesFromFile", function(object, path, append=FALSE){})
-
 setMethod("addNodesFromFile", "trafficNet", 
           function(object, path){
             nodes <- readSumoXML(path) 
@@ -70,6 +68,43 @@ setMethod("addNodesFromFile", "trafficNet",
             }
             else{
               object@nodes <- rbind(object@nodes, nodes)
+            }
+            object
+          }
+)
+
+setGeneric("addEdgeTypesFromFile", function(object, path, append=FALSE){})
+setMethod("addEdgeTypesFromFile", "trafficNet", 
+          function(object, path){
+            edgeTypes <- readSumoXML(path) 
+            edgeTypes$id <- as.character(edgeTypes$id)
+            edgeTypes$priority <- as.numeric(as.character(edgeTypes$priority))
+            edgeTypes$numLanes <- as.numeric(as.character(edgeTypes$numLanes))
+            edgeTypes$speed <- as.numeric(as.character(edgeTypes$speed))
+            if (append){
+              object@edgeTypes <- edgeTypes             
+            }
+            else{
+              object@edgeTypes <- rbind(object@edgeTypes, edgeTypes)
+            }
+            object
+          }
+)
+
+setGeneric("addConnectionsFromFile", function(object, path, append=FALSE){})
+setMethod("addConnectionsFromFile", "trafficNet", 
+          function(object, path){
+            connections <- readSumoXML(path) 
+            connections$id <- as.character(connections$id)            
+            connections$fromEdge <- as.character(connections$fromEdge)
+            connections$toEdge <- as.character(connections$toEdge)
+            connections$fromLane <- as.character(connections$fromLane)
+            connections$toLane <- as.character(connections$toLane)          
+            if (append){
+              object@connections <- connections             
+            }
+            else{
+              object@connections <- rbind(object@connections, connections)
             }
             object
           }
