@@ -57,18 +57,25 @@ setMethod("appendNode", "trafficNet",
 
 setGeneric("addNodesFromFile", function(object, path, append=FALSE){})
 setMethod("addNodesFromFile", "trafficNet", 
-          function(object, path){
+          function(object, path, append=FALSE){
             nodes <- readSumoXML(path) 
             nodes$id <- as.character(nodes$id)
-            nodes$type <- as.character(nodes$type)
+            # Check for type existence
+            if (sum(names(nodes)=="type")==1){
+              nodes$type <- as.character(nodes$type)
+            }else{             
+              nodes$type <- rep("normal", times=nrow(nodes))
+            }
+            
             nodes$x <- as.numeric(as.character(nodes$x))
             nodes$y <- as.numeric(as.character(nodes$y))
-            if (append){
+            if (append==FALSE){
               object@nodes <- nodes             
             }
             else{
               object@nodes <- rbind(object@nodes, nodes)
             }
+            rownames(object@nodes) <- seq(1:nrow(object@nodes))
             object
           }
 )
