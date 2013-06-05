@@ -85,7 +85,7 @@ setMethod("addNodesFromFile", "trafficNet",
 
 setGeneric("addEdgeTypesFromFile", function(object, path, append=FALSE){})
 setMethod("addEdgeTypesFromFile", "trafficNet", 
-          function(object, path){
+          function(object, path, append=FALSE){
             edgeTypes <- readSumoXML(path) 
             edgeTypes$id <- as.character(edgeTypes$id)
             edgeTypes$priority <- as.numeric(as.character(edgeTypes$priority))
@@ -103,7 +103,7 @@ setMethod("addEdgeTypesFromFile", "trafficNet",
 
 setGeneric("addConnectionsFromFile", function(object, path, append=FALSE){})
 setMethod("addConnectionsFromFile", "trafficNet", 
-          function(object, path){
+          function(object, path, append=FALSE){
             connections <- readSumoXML(path) 
             connections$id <- as.character(connections$id)            
             connections$fromEdge <- as.character(connections$fromEdge)
@@ -115,6 +115,28 @@ setMethod("addConnectionsFromFile", "trafficNet",
             }
             else{
               object@connections <- rbind(object@connections, connections)
+            }
+            object
+          }
+)
+
+setGeneric("addEdgesFromFile", function(object, path, append=FALSE){})
+setMethod("addEdgesFromFile", "trafficNet", 
+          function(object, path){
+            edges <- readSumoXML(path) 
+            edges$id <- as.character(edges$id)
+            edges$from <- as.character(edges$from)
+            edges$to <- as.character(edges$to)
+            edges$type <- as.character(edges$type)  
+            edges$priority <- as.numeric(as.character(edges$priority))
+            edges$function <- as.character(edges$function)
+            edges$speed <- as.numeric(as.character(edges$speed)) 
+            edges$length <- as.numeric(as.character(edges$length))            
+            if (append){
+              object@edges <- edges             
+            }
+            else{
+              object@edges <- rbind(object@edges, edges)
             }
             object
           }
