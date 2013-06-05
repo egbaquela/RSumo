@@ -65,8 +65,7 @@ setMethod("addNodesFromFile", "trafficNet",
               nodes$type <- as.character(nodes$type)
             }else{             
               nodes$type <- rep("normal", times=nrow(nodes))
-              print("Warning: Some types are missing. This nodes was setting
-                    to type=normal")
+              print("Warning: Some types are missing. This nodes was setting to type=normal")
               # Armar una llamada a warnings global
             }
             
@@ -91,12 +90,13 @@ setMethod("addEdgeTypesFromFile", "trafficNet",
             edgeTypes$priority <- as.numeric(as.character(edgeTypes$priority))
             edgeTypes$numLanes <- as.numeric(as.character(edgeTypes$numLanes))
             edgeTypes$speed <- as.numeric(as.character(edgeTypes$speed))
-            if (append){
+            if (append==FALSE){
               object@edgeTypes <- edgeTypes             
             }
             else{
               object@edgeTypes <- rbind(object@edgeTypes, edgeTypes)
             }
+            rownames(object@edgeTypes) <- seq(1:nrow(object@edgeTypes))
             object
           }
 )
@@ -110,34 +110,64 @@ setMethod("addConnectionsFromFile", "trafficNet",
             connections$toEdge <- as.character(connections$toEdge)
             connections$fromLane <- as.character(connections$fromLane)
             connections$toLane <- as.character(connections$toLane)          
-            if (append){
+            if (append==FALSE){
               object@connections <- connections             
             }
             else{
               object@connections <- rbind(object@connections, connections)
             }
+            rownames(object@connections) <- seq(1:nrow(object@connections))
             object
           }
 )
 
 setGeneric("addEdgesFromFile", function(object, path, append=FALSE){})
 setMethod("addEdgesFromFile", "trafficNet", 
-          function(object, path){
+          function(object, path, append=FALSE){
             edges <- readSumoXML(path) 
             edges$id <- as.character(edges$id)
             edges$from <- as.character(edges$from)
             edges$to <- as.character(edges$to)
-            edges$type <- as.character(edges$type)  
-            edges$priority <- as.numeric(as.character(edges$priority))
-            edges$function <- as.character(edges$function)
-            edges$speed <- as.numeric(as.character(edges$speed)) 
-            edges$length <- as.numeric(as.character(edges$length))            
-            if (append){
+            if (sum(names(edges)=="type")==1){
+              edges$type <- as.character(edges$type) 
+            }
+            else{
+              edges$type <- rep("none", times=nrow(edges))
+            }
+
+            if (sum(names(edges)=="priority")==1){
+              edges$priority <- as.numeric(as.character(edges$priority))
+            }
+            else{
+              edges$priority <- rep(1, times=nrow(edges))
+            }            
+
+            if (sum(names(edges)=="function")==1){
+              # Change the name because any column can not has "function" as name.
+              posFunction <- order((names(edges)=="function"),decreasing=TRUE)[1]
+              names(edges)[posFunction] <- "edgeFunction"
+              edges$edgeFunction <- as.character(edges$edgeFunction)
+            }
+            else{
+              edges$edgeFunction <- rep("normal", times=nrow(edges))
+            }            
+
+            if (sum(names(edges)=="speed")==1){
+              edges$speed <- as.numeric(as.character(edges$speed))
+            }
+            else{
+              edges$speed <- rep(1.0, times=nrow(edges))
+            }            
+            
+            
+            # edges$length <- as.numeric(as.character(edges$length))            
+            if (append==FALSE){
               object@edges <- edges             
             }
             else{
               object@edges <- rbind(object@edges, edges)
             }
+            rownames(object@edges) <- seq(1:nrow(object@edges))
             object
           }
 )
