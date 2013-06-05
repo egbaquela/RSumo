@@ -65,6 +65,9 @@ setMethod("addNodesFromFile", "trafficNet",
               nodes$type <- as.character(nodes$type)
             }else{             
               nodes$type <- rep("normal", times=nrow(nodes))
+              print("Warning: Some types are missing. This nodes was setting
+                    to type=normal")
+              # Armar una llamada a warnings global
             }
             
             nodes$x <- as.numeric(as.character(nodes$x))
