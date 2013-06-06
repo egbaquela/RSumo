@@ -101,6 +101,18 @@ setMethod("generateNetFromCFG", "adminRSumo",
           } 
 )
 
+setGeneric("generateNet", function(object, pathNodes, pathEdges, pathOutput){})
+
+setMethod("generateNet", "adminRSumo", 
+          function(object, pathNodes, pathEdges, pathOutput){
+            shell(paste(object@sumoBinPath, "netconvert.exe",
+                        " --node-files=\"", pathNodes,"\"",
+                        " --edge-files=\"", pathEdges,"\"",
+                        " --output-file=\"", pathOutput,"\"",
+                        sep=""))  
+          } 
+)
+
 setGeneric("generateRandomNet", function(object, iterations, pathOutput){})
 
 #Cambiar netgen por netgenerate
@@ -115,14 +127,14 @@ setGeneric("generateRandomTrips",
                     tripPrefix = "t", tripParams=NA, beginTime=0, endTime=3600, 
                     period=1,seed=NA, lengthWeigth=NA, lanesWeigth=NA,
                     speedWeigth=NA, fringeFactor=1, fringeThreshold=NA,
-                    min-distance=0){})
+                    minDistance=0){})
 
 setMethod("generateRandomTrips", "adminRSumo", 
           function(object, pathNet, pathOutput, generateRoute = TRUE, 
                    tripPrefix = "t", tripParams=NA, beginTime=0, endTime=3600, 
                    period=1,seed=NA, lengthWeigth=NA, lanesWeigth=NA,
                    speedWeigth=NA, fringeFactor=1, fringeThreshold=NA,
-                   min-distance=0){
+                   minDistance=0){
             # Versión anterior, llamaba a DUAROUTER, pero genera errores
             # shell(paste(object@sumoBinPath, "duarouter.exe"," -n=\"", pathNet,"\""," -o=\"", pathOutput,"\""," -b=", beginTime," -e=", endTime, " -R=0.1", sep="")) 
             if (!is.na(seed)){set.seed(seed)} 

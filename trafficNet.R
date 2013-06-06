@@ -65,7 +65,7 @@ setMethod("addNodesFromFile", "trafficNet",
               nodes$type <- as.character(nodes$type)
             }else{             
               nodes$type <- rep("normal", times=nrow(nodes))
-              print("Warning: Some types are missing. This nodes was setting to type=normal")
+              cat("Warning: Some types are missing. This nodes was setting to type=normal")
               # Armar una llamada a warnings global
             }
             
@@ -169,5 +169,23 @@ setMethod("addEdgesFromFile", "trafficNet",
             }
             rownames(object@edges) <- seq(1:nrow(object@edges))
             object
+          }
+)
+
+setGeneric("writeNodesToXML", function(object, path){})
+setMethod("writeNodesToXML", "trafficNet", 
+          function(object, path){
+            parentXMLNode <- xmlNode("nodes")
+            for (i in 1:nrow(object@nodes)){
+              childNode <- xmlNode("node")
+              childNode <- addAttributes(childNode, 
+                                         id = object@nodes$id[i],
+                                         x = object@nodes$x[i],
+                                         y = object@nodes$y[i],
+                                         type = object@nodes$type[i])
+              parentXMLNode <- addChildren(parentXMLNode, 
+                                           childNode) 
+            }
+            saveXML(parentXMLNode, path)
           }
 )
