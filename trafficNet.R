@@ -234,8 +234,8 @@ setMethod("writeConnectionsToXML", "trafficNet",
           }
 )
 
-setGeneric("writeEdgeToXML", function(object, path){})
-setMethod("writeEdgeToXML", "trafficNet", 
+setGeneric("writeEdgesToXML", function(object, path){})
+setMethod("writeEdgesToXML", "trafficNet", 
           function(object, path){
             parentXMLNode <- xmlNode("edges")
             for (i in 1:nrow(object@edges)){
@@ -243,14 +243,15 @@ setMethod("writeEdgeToXML", "trafficNet",
               childNode <- addAttributes(childNode, 
                                          id = object@edges$id[i],
                                          from = object@edges$from[i],
-                                         to = object@edges$to[i],
-                                         type = object@edges$type[i],
-                                         priority = object@edges$priority[i],
+                                         to = object@edges$to[i]
+                                         #type = object@edges$type[i],
+                                         #priority = object@edges$priority[i],
                                          #edgeFunction = object@edges$edgeFunction[i],
                                          #Implementar el cambio de edgeFunction a function
-                                         speed = object@edges$speed[i],
-                                         length = object@edges$length[i],
-                                         lanes = object@edges$lanes[i])
+                                         #speed = object@edges$speed[i],
+                                         #length = object@edges$length[i],
+                                         #lanes = object@edges$lanes[i]
+                                         )
               parentXMLNode <- addChildren(parentXMLNode, 
                                            childNode) 
             }

@@ -5,6 +5,7 @@
 ###################################################
  
 require(stats)
+#requiere(trafficNet.R)
 
 
 ############## Sumo Manager########################
@@ -101,9 +102,9 @@ setMethod("generateNetFromCFG", "adminRSumo",
           } 
 )
 
-setGeneric("generateNet", function(object, pathNodes, pathEdges, pathOutput){})
+setGeneric("generateNetFromFiles", function(object, pathNodes, pathEdges, pathOutput){})
 
-setMethod("generateNet", "adminRSumo", 
+setMethod("generateNetFromFiles", "adminRSumo", 
           function(object, pathNodes, pathEdges, pathOutput){
             shell(paste(object@sumoBinPath, "netconvert.exe",
                         " --node-files=\"", pathNodes,"\"",
@@ -112,6 +113,37 @@ setMethod("generateNet", "adminRSumo",
                         sep=""))  
           } 
 )
+
+setGeneric("generateNet", function(object, trafficNet, 
+                                   pathOutputFolder, outputFileName){})
+
+setMethod("generateNet", "adminRSumo", 
+          function(object, trafficNet, pathOutputFolder, 
+                   outputFileName){
+            pathNodes <- paste(pathOutputFolder, trafficNet@id,
+                               ".nod.xml", sep="")
+            writeNodesToXML(trafficNet, pathNodes)
+            pathEdges <- paste(pathOutputFolder, trafficNet@id,
+                               ".edg.xml", sep="")
+            writeEdgesToXML(trafficNet, pathEdges)            
+
+            command <- paste(object@sumoBinPath, "netconvert.exe",
+                             " --node-files=\"", pathNodes,"\"",
+                             " --edge-files=\"", pathEdges,"\"",
+                             sep="")
+            #if (trafficNet@connections) {
+              # Crear Archivo connection
+            #}
+            #if (trafficNet@edgeTypes) {
+              # Crear Archivo types
+            #}            
+            
+            shell(paste(command, " --output-file=\"",
+                        pathOutputFolder, outputFileName,
+                        "\"", sep=""))  
+          } 
+)
+
 
 setGeneric("generateRandomNet", function(object, iterations, pathOutput){})
 
