@@ -4,12 +4,22 @@ require("XML")
 xmlNodesAttrToDataFrame <- function(xmlNode){
   myXmlAttr <- xmlApply(xmlNode, xmlAttrs)
   attrDataFrame <- t(as.data.frame(myXmlAttr))
-  attrDataFrame <- as.data.frame(attrDataFrame)    
+  attrDataFrame <- as.data.frame(attrDataFrame)   
+  #Arreglar problema cuando la cantidad de artributos sea diferente
+  #entre nodos
 }
 
-readSumoXML <- function(path){
+readSumoXML <- function(path, readValue=FaLSE){
   myXml <- newXMLDoc()
   myXml <-xmlRoot(xmlParse(path))
-  xmlNodesAttrToDataFrame(myXml) 
+  attrDataFrame <- xmlNodesAttrToDataFrame(myXml)
+  if (!readValue){
+    attrDataFrame
+  }
+  else{
+    #Cambiar a devolución de valores
+    attrDataFrame
+  }
+  
 }
 

@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<nodes>
- <node id="1" x="-500" y="0" type="normal"/>
- <node id="2" x="-250" y="0" type="normal"/>
- <node id="3" x="-250" y="100" type="normal"/>
- <node id="4" x="100" y="100" type="normal"/>
- <node id="5" x="101" y="100" type="normal"/>
-</nodes>
