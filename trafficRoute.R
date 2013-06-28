@@ -42,7 +42,7 @@ setMethod("appendVehicleType", "trafficRoute",
             vehicleType <- data.frame(id, accel, 
                                       decel, length, 
                                       maxSpeed, sigma)
-            object@vehicleType <- rbind(object@vehicleType,
+            object@vehicleTypes <- rbind(object@vehicleTypes,
                                         vehicleType)
             object  
           }
@@ -53,7 +53,7 @@ setMethod("appendRoute", "trafficRoute",
           function(object, id, edges){
             # Asociarlo a una trafficNet
             route <- data.frame(id, edges)
-            object@route <- rbind(object@route,route)
+            object@routes <- rbind(object@routes,route)
             object  
           }
 )
@@ -65,7 +65,45 @@ setMethod("appendVehicle", "trafficRoute",
                    route, depart){
             # Asociarlo a las routes de este objeto
             vehicle <- data.frame(id, type, route, depart)
-            object@vehicle <- rbind(object@vehicle,vehicle)
+            object@vehicles <- rbind(object@vehicles,vehicle)
             object  
+          }
+)
+
+setGeneric("writeTrafficRouteToXML", function(object, path){})
+setMethod("writeTrafficRouteToXML", "trafficRoute", 
+          function(object, path){
+            parentXMLRoute <- xmlNode("routes")
+            for (i in 1:nrow(object@vehicleTypes)){
+              childNode <- xmlNode("vType")
+              childNode <- addAttributes(childNode, 
+                                         id = object@vehicleTypes$id[i],
+                                         accel = object@vehicleTypes$accel[i],
+                                         decel = object@vehicleTypes$decel[i],
+                                         length = object@vehicleTypes$length[i],
+                                         maxSpeed = object@vehicleTypes$maxSpeed[i],
+                                         sigma = object@vehicleTypes$sigma[i])
+              parentXMLNode <- addChildren(parentXMLNode, 
+                                           childNode) 
+            }
+            for (i in 1:nrow(object@routes)){
+              childNode <- xmlNode("route")
+              childNode <- addAttributes(childNode, 
+                                         id = object@routes$id[i],
+                                         edges = object@routes$edges[i])
+              parentXMLNode <- addChildren(parentXMLNode, 
+                                           childNode) 
+            }  
+            for (i in 1:nrow(object@vehicles)){
+              childNode <- xmlNode("vehicle")
+              childNode <- addAttributes(childNode, 
+                                         id = object@vehicles$id[i],
+                                         route = object@vehicles$route[i],  
+                                         type = object@vehicles$type[i],                                         
+                                         depart = object@vehicles$depart[i])
+              parentXMLNode <- addChildren(parentXMLNode, 
+                                           childNode) 
+            }              
+            saveXML(parentXMLNode, path)
           }
 )
