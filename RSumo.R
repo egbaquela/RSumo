@@ -93,6 +93,26 @@ setMethod("runSimulationFromFiles", "adminRSumo",
   }        
 )
 
+setGeneric("runSimulation", function(object, trafficNet, trafficRoute, endTime, activeGUI=FALSE,
+                                              pathOutputs=NA, reportTripInfo = FALSE, reportVehRoute = FALSE,
+                                              reportSummary = FALSE){})
+
+setMethod("runSimulation", "adminRSumo",
+          function(object, trafficNet, trafficRoute, endTime, activeGUI=FALSE, 
+                   pathOutputs=NA, reportTripInfo = FALSE, reportVehRoute = FALSE,
+                   reportSummary = FALSE){
+            
+            pathNet <- generateNet(object, trafficNet, paste(getwd(), "/", sep=""), 
+                                   paste(trafficNet@id, ".net.xml", sep=""))
+            pathRoute <- writeTrafficRouteToXML(trafficRoute, paste(getwd(), "/", trafficRoute@id, ".rou.xml", sep=""))
+            runSimulationFromFiles(object, pathNet, pathRoute, endTime, activeGUI, 
+                                   pathOutputs, reportTripInfo, reportVehRoute,
+                                   reportSummary)
+)
+
+
+
+
 setGeneric("generateNetFromCFG", function(object, pathCFG){})
 
 #Cambiar netgen por netgenerate
