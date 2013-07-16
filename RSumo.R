@@ -174,6 +174,7 @@ setMethod("generateRandomNet", "adminRSumo",
             }
             shell(paste(object@sumoBinPath, "netgen.exe"," --random-net --rand-iterations=", iterations, " -o=\"",pathOutput, name,".net.xlm", "\"", sep=""))  
           } 
+          paste(name,".net.xlm", sep="")
 )
 
 setGeneric("generateRandomTrips", 
