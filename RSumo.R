@@ -170,11 +170,15 @@ setGeneric("generateRandomNet", function(object, iterations, pathOutputDir, name
 #Cambiar netgen por netgenerate
 setMethod("generateRandomNet", "adminRSumo", 
           function(object,  iterations, pathOutputDir, name=NULL){
-            if (name==NULL){
-              name=character(integer(runif(1)*10000))  
+            netNames<-NULL
+            for (i in 1:length(iterations)){
+              if (is.null(name)){
+                actualName=as.character(as.integer(runif(1)*10000))  
+              }              
+              shell(paste(object@sumoBinPath, "netgenerate.exe"," --random-net --rand-iterations=", iterations[i], " -o=\"",pathOutputDir, actualName,".net.xlm", "\"", sep=""))                
+              netNames[i] <- paste(actualName,".net.xlm", sep="")
             }
-            shell(paste(object@sumoBinPath, "netgen.exe"," --random-net --rand-iterations=", iterations, " -o=\"",pathOutput, name,".net.xlm", "\"", sep=""))  
-          paste(name,".net.xlm", sep="")
+            netNames
           }             
 )
 
