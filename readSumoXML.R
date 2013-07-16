@@ -9,7 +9,7 @@ xmlNodesAttrToDataFrame <- function(xmlNode){
   #entre nodos
 }
 
-readSumoXML <- function(path, readValue=FaLSE){
+readSumoXML <- function(path, readValue=FALSE){
   myXml <- newXMLDoc()
   myXml <-xmlRoot(xmlParse(path))
   attrDataFrame <- xmlNodesAttrToDataFrame(myXml)

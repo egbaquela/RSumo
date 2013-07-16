@@ -7,7 +7,6 @@
 require(stats)
 #requiere(trafficNet.R)
 
-
 ############## Sumo Manager########################
 setClass("adminRSumo",
   representation(
@@ -165,12 +164,15 @@ setMethod("generateNet", "adminRSumo",
 )
 
 
-setGeneric("generateRandomNet", function(object, iterations, pathOutput){})
+setGeneric("generateRandomNet", function(object, iterations, pathOutputDir){})
 
 #Cambiar netgen por netgenerate
 setMethod("generateRandomNet", "adminRSumo", 
-          function(object,  iterations, pathOutput){
-            shell(paste(object@sumoBinPath, "netgen.exe"," --random-net --rand-iterations=", iterations, " -o=\"",pathOutput,"\"", sep=""))  
+          function(object,  iterations, pathOutputDir, name=NULL){
+            if (name=NULL){
+              name=character(integer(runif(1)*10000))  
+            }
+            shell(paste(object@sumoBinPath, "netgen.exe"," --random-net --rand-iterations=", iterations, " -o=\"",pathOutput, name,".net.xlm", "\"", sep=""))  
           } 
 )
 

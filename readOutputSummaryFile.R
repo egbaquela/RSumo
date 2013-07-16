@@ -1,3 +1,5 @@
+setwd("D:/Compartido/Proyectos/RSumo")
+
 #requiere("readSumoXML.R")
 
 readOutputSummaryFile <- function(path){

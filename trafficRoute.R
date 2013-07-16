@@ -73,7 +73,7 @@ setMethod("appendVehicle", "trafficRoute",
 setGeneric("writeTrafficRouteToXML", function(object, path){})
 setMethod("writeTrafficRouteToXML", "trafficRoute", 
           function(object, path){
-            parentXMLRoute <- xmlNode("routes")
+            parentXMLNode <- xmlNode("routes")
             for (i in 1:nrow(object@vehicleTypes)){
               childNode <- xmlNode("vType")
               childNode <- addAttributes(childNode, 
