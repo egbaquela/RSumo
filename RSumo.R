@@ -151,12 +151,20 @@ setMethod("generateNet", "adminRSumo",
                              " --node-files=\"", pathNodes,"\"",
                              " --edge-files=\"", pathEdges,"\"",
                              sep="")
-            #if (trafficNet@connections) {
-              # Crear Archivo connection
-            #}
-            #if (trafficNet@edgeTypes) {
-              # Crear Archivo types
-            #}            
+            if !is.na(trafficNet@connections) {
+              pathConnections<- paste(pathOutputFolder, trafficNet@id,
+                                      ".con.xml", sep="")
+              writeConnectionsToXML(trafficNet, pathConnections)
+              command <- paste(command, " --connection-files=\"", 
+                               pathConnections,"\"", sep="")              
+            }
+            if !is.na(trafficNet@edgeTypes) {
+              pathEdgeTypess<- paste(pathOutputFolder, trafficNet@id,
+                                      ".typ.xml", sep="")
+              writeEdgeTypesToXML(trafficNet, pathEdgeTypes)
+              command <- paste(command, " --type-files=\"", 
+                               pathEdgeTypes,"\"", sep="")              
+            }           
             
             shell(paste(command, " --output-file=\"",
                         pathOutputFolder, outputFileName,
