@@ -174,6 +174,29 @@ setMethod("addEdgesFromFile", "trafficNet",
               object@edges <- rbind(object@edges, edges)
             }
             rownames(object@edges) <- seq(1:nrow(object@edges))
+            
+            # Load the lanes XML subnodes
+            lanes <- readXMLNodesAsDataFrame(path, "/edges/edge/lane")
+            if (sum(names(lanes)=="index")==1){
+              lanes$index <- as.numeric(as.character(lanes$index))
+            }
+            else{
+              lanes$index <- rep(1, times=nrow(lanes))
+            }
+            if (sum(names(lanes)=="speed")==1){
+              lanes$speed <- as.numeric(as.character(lanes$speed))
+            }
+            else{
+              lanes$speed <- rep(1, times=nrow(lanes))
+            }
+            if (sum(names(lanes)=="length")==1){
+              lanes$length <- as.numeric(as.character(lanes$length))
+            }
+            else{
+              lanes$length <- rep(1, times=nrow(lanes))
+            }
+            object@lanes <- lanes
+            
             object
           }
 )
