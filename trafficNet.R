@@ -281,3 +281,22 @@ setMethod("writeEdgesToXML", "trafficNet",
             saveXML(parentXMLNode, path)
           }
 )
+
+setGeneric("numNodes", function(object){})
+setMethod("numNodes", "trafficNet", 
+          function(object){
+            nrow(object@nodes)
+          }
+)
+
+setGeneric("numEdges", function(object){})
+setMethod("numEdges", "trafficNet", 
+          function(object){
+            nrow(object@edges)
+          }
+)
+
+readTrafficNetFromFile <- function(path){
+  myXml <- readXml(path)
+  
+}
