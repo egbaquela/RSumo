@@ -49,8 +49,9 @@ trafficNet <- function(id){
 setGeneric("appendNode", function(object, id, type, x,y){})
 setMethod("appendNode", "trafficNet", 
           function(object, id, type, x,y){
-            node <- data.frame(id, type, x, y)
-            object@nodes <- rbind(object@nodes, node)
+            # node <- data.frame(id, type, x, y)
+            # object@nodes <- rbind(object@nodes, node)
+            object@nodes <- rbind(object@nodes, cbind(id, type, x, y))
             object  
           }
 )
@@ -121,10 +122,10 @@ setMethod("addConnectionsFromFile", "trafficNet",
           }
 )
 
-setGeneric("addEdgesFromFile", function(object, path, append=FALSE){})
+setGeneric("addEdgesFromFile", function(object, path, append=FALSE, asText=False){})
 setMethod("addEdgesFromFile", "trafficNet", 
-          function(object, path, append=FALSE){
-            edges <- readSumoXML(path) 
+          function(object, path, append=FALSE, asText=FALSE){
+            edges <- readSumoXML(path, asText)
             edges$id <- as.character(edges$id)
             edges$from <- as.character(edges$from)
             edges$to <- as.character(edges$to)
@@ -176,7 +177,7 @@ setMethod("addEdgesFromFile", "trafficNet",
             rownames(object@edges) <- seq(1:nrow(object@edges))
             
             # Load the lanes XML subnodes
-            lanes <- readXMLNodesAsDataFrame(path, "/edges/edge/lane")
+            lanes <- readXMLNodesFromFileAsDataFrame(path, "lane")
             if (sum(names(lanes)=="index")==1){
               lanes$index <- as.numeric(as.character(lanes$index))
             }
@@ -200,7 +201,6 @@ setMethod("addEdgesFromFile", "trafficNet",
             object
           }
 )
-
 
 setGeneric("writeNodesToXML", function(object, path){})
 setMethod("writeNodesToXML", "trafficNet", 
@@ -298,5 +298,24 @@ setMethod("numEdges", "trafficNet",
 
 readTrafficNetFromFile <- function(path){
   myXml <- readXml(path)
+  xmlEdgesDoc <- newXMLDoc()
+  xmlEdges <- newXMLNode("edges")
+  # Leo solamente los edges que son del tipo "normal".
+  # SUMO declara edges internal en el atributo "function".
+  # El valor por default es "normal", y cuando el edge
+  # es "normal", "function" no se declara. Si el
+  # edge es de otro tipo ("internal" por ejemplo),
+  # se agrega este atributo al nodo. Por lo tanto,
+  # si filtro los edges que no tienen el atributo
+  # "function" declarado, estoy filtrando los edges
+  # con "function = normal".
+  xmlEdges <- addChildren(xmlEdges,
+                          getNodeSet(myXml, "edge[not(@function)]"))
+  xmlEdgesDoc <-addChildren(xmlEdgesDoc, xmlEdges)
+  myTrafficNet <- trafficNet("-")
+  myTrafficNet <- addEdgesFromFile(myTrafficNet,
+                                   saveXML(xmlEdgesDoc),
+                                  asText=TRUE)
   
+  myTrafficNet
 }
