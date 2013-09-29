@@ -31,7 +31,10 @@ setGeneric("appendFlow", function(object, id, from, to,
 setMethod("appendFlow", "trafficFlow", 
           function(object, id, from, to, begin, end, number){
             # Asociarlo a una trafficNet
-            flow <- data.frame(id, from, to, begin, end, number)
+            id<-as.character(id)
+            from<-as.character(from)
+            to<-as.character(to)
+            flow <- data.frame(id, from,to, begin, end, number)
             object@flows <- rbind(object@flows,flow)
             object  
           }
@@ -66,7 +69,9 @@ setMethod("generateRandomFlow", "trafficFlow",
             origin <- sample(nodes, number, replace=TRUE)
             destination <- sample(nodes, number, replace=TRUE)
             #Añadir chequeo por si el origen y destino coinciden
-            object <- appendFlow(object, 1:nodes, origin, destination,
+            #cuando añada ese chequeo, ojo que el segundo
+            # parámetro de appendFlow deberia ser menor a 1:number
+            object <- appendFlow(object, 1:number, origin, destination,
                                  begin, end, 1)
             object
           }
