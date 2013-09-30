@@ -92,7 +92,7 @@ setMethod("generateRandomFlow", "trafficFlow",
             # Tengo muchos flows identicos con un solo vehículo,
             # acá cuento las repeticiones y las consolido
             flows <- as.data.frame(table(flows))
-            flows <- flows[which(flowsCounts$Freq>0),]
+            flows <- flows[which(flows$Freq>0),]
             names(flows)<-c("origin", "destination", "number")
             object <- appendFlow(object, 1:nrow(flows), flows$origin, 
                                  flows$destination, begin, end, 
