@@ -40,6 +40,17 @@ setMethod("appendFlow", "trafficFlow",
           }
 )
 
+setGeneric("removeFlow", function(object, flowIndex=NA, idFlow=NA){})
+setMethod("removeFlow", "trafficFlow",
+          function(object, flowIndex=NA, idFlow=NA){
+            if(!is.na(flowIndex)){
+              object@flows <- object@flows[-flowIndex] 
+            }else{
+              object@flows <- object@flows[!(object@flows$id==idFlow)]
+            }
+          }
+)
+
 setGeneric("writeTrafficFlowToXML", function(object, path){})
 setMethod("writeTrafficFlowToXML", "trafficFlow", 
           function(object, path){
@@ -65,6 +76,9 @@ setGeneric("generateRandomFlow", function(object, trafficNet, number,
                                           begin, end){})
 setMethod("generateRandomFlow", "trafficFlow", 
           function(object, trafficNet, number, begin, end){
+            #Elimino todos los flows actuales.
+            removeFlow(object, 1:length(object@flows))
+            #Inicio la generación de los flows aleatorios.
             nodes <-numNodes(trafficNet)
             origin <- sample(nodes, number, replace=TRUE)
             destination <- sample(nodes, number, replace=TRUE)
