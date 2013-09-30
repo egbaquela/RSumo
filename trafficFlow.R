@@ -82,11 +82,16 @@ setMethod("generateRandomFlow", "trafficFlow",
             nodes <-numNodes(trafficNet)
             origin <- sample(nodes, number, replace=TRUE)
             destination <- sample(nodes, number, replace=TRUE)
-            #Añadir chequeo por si el origen y destino coinciden
-            #cuando añada ese chequeo, ojo que el segundo
-            # parámetro de appendFlow deberia ser menor a 1:number
-            object <- appendFlow(object, 1:number, origin, destination,
-                                 begin, end, 1)
+            flows <- data.frame(origin, destination)
+
+            # Tengo muchos flows identicos con un solo vehículo,
+            # acá cuento las repeticiones y las consolido
+            flows <- as.data.frame(table(flows))
+            flows <- flows[which(flowsCounts$Freq>0),]
+            names(flows)<-c("origin", "destination", "number")
+            object <- appendFlow(object, 1:nrow(flows), flows$origin, 
+                                 flows$destination, begin, end, 
+                                 flows$number)
             object
           }
 )
