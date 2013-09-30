@@ -70,8 +70,8 @@ setMethod("writeTrafficFlowToXML", "trafficFlow",
             childrenNodes <- rep(list(xmlNode("flow")), times=nrow(object@flows))
             childrenNodes <- mapply(addAttributes, childrenNodes, 
                                  id = object@flows$id, from = object@flows$from,
-                                 to = object@flows$to[i],begin = object@flows$begin[i],
-                                 end = object@flows$end[i],number = object@flows$number[i]))
+                                 to = object@flows$to[i],begin = object@flows$begin,
+                                 end = object@flows$end[i],number = object@flows$number)
             parentXMLNode <- addChildren(node=parentXMLNode,kids=childrenNodes)
             saveXML(parentXMLNode, path)
           }
