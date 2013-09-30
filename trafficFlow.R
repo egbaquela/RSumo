@@ -55,19 +55,24 @@ setGeneric("writeTrafficFlowToXML", function(object, path){})
 setMethod("writeTrafficFlowToXML", "trafficFlow", 
           function(object, path){
             parentXMLNode <- xmlNode("flows")
-            for (i in 1:nrow(object@flows)){
-              childNode <- xmlNode("flow")
-              childNode <- addAttributes(childNode, 
-                                         id = object@flows$id[i],
-                                         from = object@flows$from[i],
-                                         to = object@flows$to[i],
-                                         begin = object@flows$begin[i],
-                                         end = object@flows$end[i],
-                                         number = object@flows$number[i])
-              parentXMLNode <- addChildren(parentXMLNode, 
-                                           childNode) 
-            }
-                  
+            #for (i in 1:nrow(object@flows)){
+            #  childNode <- c(childNode, list(xmlNode("flow")))
+            #  childNode <- addAttributes(childNode, 
+            #                             id = object@flows$id[i],
+            #                             from = object@flows$from[i],
+            #                            to = object@flows$to[i],
+            #                             begin = object@flows$begin[i],
+            #                            end = object@flows$end[i],
+            #                             number = object@flows$number[i])
+            #  parentXMLNode <- addChildren(parentXMLNode, 
+            #                               childNode) 
+            #}
+            childrenNodes <- rep(list(xmlNode("flow")), times=nrow(object@flows))
+            childrenNodes <- mapply(addAttributes, childrenNodes, 
+                                 id = object@flows$id, from = object@flows$from,
+                                 to = object@flows$to[i],begin = object@flows$begin[i],
+                                 end = object@flows$end[i],number = object@flows$number[i]))
+            parentXMLNode <- addChildren(node=parentXMLNode,kids=childrenNodes)
             saveXML(parentXMLNode, path)
           }
 )
