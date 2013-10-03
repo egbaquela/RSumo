@@ -211,3 +211,12 @@ setMethod("generateRandomTrips", "adminRSumo",
             # Pendiente: DESARROLLAR LECTURA DE ARCHIVOS .net para asignar trips
           } 
 )
+
+setGeneric("generateRoutesFromFlow", 
+           function(object, pathNet, pathFlow, pathOutput){})
+setMethod("generateRoutesFromFlow", "adminRSumo", 
+          function(object, pathNet, pathFlow, pathOutput){
+            shell(paste(object@sumoBinPath, "duarouter.exe"," -n=\"", pathNet,"\"", " -f=\"", pathFlow,"\""," -o=\"", pathOutput,"\"", sep="")) 
+
+          } 
+)
