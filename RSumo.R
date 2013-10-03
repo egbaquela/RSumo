@@ -175,7 +175,6 @@ setMethod("generateNet", "adminRSumo",
 
 setGeneric("generateRandomNet", function(object, iterations, pathOutputDir, name){})
 
-#Cambiar netgen por netgenerate
 setMethod("generateRandomNet", "adminRSumo", 
           function(object,  iterations, pathOutputDir, name=NULL){
             if (length(name)!=length(iterations)){
@@ -191,6 +190,27 @@ setMethod("generateRandomNet", "adminRSumo",
             name
           }             
 )
+
+setGeneric("generateGridNet", function(object, gridNumber, gridLength, pathOutputDir, name){})
+
+setMethod("generateGridNet", "adminRSumo", 
+          function(object,  gridNumber, gridLength, pathOutputDir, name=NULL){
+            if (length(name)!=max(length(gridNumber), length(gridLength))){
+              name <- "net_"  
+            }  
+            name <- paste(name, 
+                          as.character(1:max(length(gridNumber), length(gridLength))),
+                          ".net.xml",
+                          sep="") 
+            #Implementar con mapply
+            for (i in 1:max(length(gridNumber), length(gridLength))){            
+              shell(paste(object@sumoBinPath, "netgenerate.exe"," --grid-net --grid-number=", gridNumber[i], " --grid-length=", gridLength[i],  " -o=\"",pathOutputDir, name[i], "\"", sep=""))                
+            }
+            name
+          }             
+)
+
+
 
 setGeneric("generateRandomTrips", 
            function(object, pathNet, pathOutput, generateRoute = TRUE, 
