@@ -1,9 +1,9 @@
-############ Read of Sumo XML files #################
+############## Read of Sumo XML files #################
 require("XML")
 
-readXml <- function(path){
+readXml <- function(path, asText=FALSE){
   myXml <- newXMLDoc()
-  myXml <-xmlRoot(xmlParse(path))
+  myXml <-xmlRoot(xmlParse(path, asText))
   myXml
 }
 
@@ -16,8 +16,8 @@ xmlNodesAttrToDataFrame <- function(xmlNode){
   attrDataFrame
 }
 
-readSumoXML <- function(path, readValue=FALSE){
-  myXml <- readXml(path)
+readSumoXML <- function(path, readValue=FALSE, asText=FALSE){
+  myXml <- readXml(path, asText)
   attrDataFrame <- xmlNodesAttrToDataFrame(myXml)
   if (!readValue){
     attrDataFrame
@@ -29,9 +29,15 @@ readSumoXML <- function(path, readValue=FALSE){
   
 }
 
-readXMLNodesAsDataFrame <- function(path, xPath){
+readXMLNodesAsDataFrame <- function(xmlNodes, xPath){
+  xmlNodes<-xmlApply(getNodeSet(xmlNodes,xPath), xmlAttrs)
+  myDataFrame <- as.data.frame(t(as.data.frame(xmlNodes)))  
+  myDataFrame
+}
+
+
+readXMLNodesFromFileAsDataFrame <- function(path, xPath){
   myXml <- readXml(path)
-  myXml<-xmlApply(getNodeSet(myXml,xPath), xmlAttrs)
-  myDataFrame <- as.data.frame(t(as.data.frame(myXml)))  
+  myDataFrame <- readXMLNodesAsDataFrame(myXml, xPath)  
   myDataFrame
 }

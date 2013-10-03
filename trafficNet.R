@@ -56,10 +56,10 @@ setMethod("appendNode", "trafficNet",
           }
 )
 
-setGeneric("addNodesFromFile", function(object, path, append=FALSE){})
+setGeneric("addNodesFromFile", function(object, path, append=FALSE, asText=FALSE){})
 setMethod("addNodesFromFile", "trafficNet", 
-          function(object, path, append=FALSE){
-            nodes <- readSumoXML(path) 
+          function(object, path, append=FALSE, asText=FALSE){
+            nodes <- readSumoXML(path, asText) 
             nodes$id <- as.character(nodes$id)
             # Check for type existence
             if (sum(names(nodes)=="type")==1){
@@ -298,8 +298,7 @@ setMethod("numEdges", "trafficNet",
 
 readTrafficNetFromFile <- function(path){
   myXml <- readXml(path)
-  xmlEdgesDoc <- newXMLDoc()
-  xmlEdges <- newXMLNode("edges")
+  myTrafficNet <- trafficNet("-")  
   # Leo solamente los edges que son del tipo "normal".
   # SUMO declara edges internal en el atributo "function".
   # El valor por default es "normal", y cuando el edge
@@ -309,13 +308,24 @@ readTrafficNetFromFile <- function(path){
   # si filtro los edges que no tienen el atributo
   # "function" declarado, estoy filtrando los edges
   # con "function = normal".
+  xmlEdgesDoc <- newXMLDoc()
+  xmlEdges <- newXMLNode("edges")  
   xmlEdges <- addChildren(xmlEdges,
                           getNodeSet(myXml, "edge[not(@function)]"))
   xmlEdgesDoc <-addChildren(xmlEdgesDoc, xmlEdges)
-  myTrafficNet <- trafficNet("-")
   myTrafficNet <- addEdgesFromFile(myTrafficNet,
                                    saveXML(xmlEdgesDoc),
                                   asText=TRUE)
   
+  # Idem como con los edges, leo los nodos, que
+  # en los archivos net.xml se denominan "junctions":
+  xmlNodesDoc <- newXMLDoc()
+  xmlNodes <- newXMLNode("nodes")  
+  xmlNodes <- addChildren(xmlNodes,
+                          getNodeSet(myXml, "junction[@type!=\"internal\"]"))
+  xmlNodesDoc <-addChildren(xmlNodesDoc, xmlNodes)
+  myTrafficNet <- addNodesFromFile(myTrafficNet,
+                                   saveXML(xmlNodesDoc),
+                                   asText=TRUE)  
   myTrafficNet
 }
