@@ -76,7 +76,7 @@ setMethod("generateRandomTrip", "trafficTrip",
             #Elimino todos los trips actuales.
             removeTrip(object, 1:length(object@trip))
             #Inicio la generación de los trips aleatorios.
-            namesOfEdges <-nameEdges(trafficNet)
+            namesOfEdges <-idEdges(trafficNet)
             origin <- sample(namesOfEdges, number, replace=TRUE)
             destination <- sample(namesOfEdges, number, replace=TRUE)
             object <- appendTrip(object, 1:number, depart, origin, 

@@ -84,7 +84,7 @@ setMethod("generateRandomFlow", "trafficFlow",
             #Elimino todos los flows actuales.
             removeFlow(object, 1:length(object@flows))
             #Inicio la generación de los flows aleatorios.
-            namesOfEdges <-nameEdges(trafficNet)
+            namesOfEdges <-idEdges(trafficNet)
             origin <- sample(namesOfEdges, number, replace=TRUE)
             destination <- sample(namesOfEdges, number, replace=TRUE)
             flows <- data.frame(origin, destination)

@@ -329,3 +329,10 @@ readTrafficNetFromFile <- function(path){
                                    asText=TRUE)  
   myTrafficNet
 }
+
+setGeneric("idEdges", function(object){})
+setMethod("idEdges", "trafficNet", 
+          function(object){
+            object@edges$id
+          }
+)
