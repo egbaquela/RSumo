@@ -44,7 +44,7 @@ setGeneric("removeFlow", function(object, flowIndex=NA, idFlow=NA){})
 setMethod("removeFlow", "trafficFlow",
           function(object, flowIndex=NA, idFlow=NA){
             if(!is.na(flowIndex)){
-              object@flows <- object@flows[-flowIndex] 
+              object@flows <- object@flows[-flowIndex,] 
             }else{
               object@flows <- object@flows[!(object@flows$id==idFlow)]
             }
