@@ -181,12 +181,14 @@ setMethod("generateRandomNet", "adminRSumo",
               name <- "net_"  
             }  
             name <- paste(name, 
-                          as.character(1:length(iterations)),
+                          as.character(1:max(length(iterations), length(name))),
                           ".net.xml",
                           sep="") 
-            for (i in 1:length(iterations)){            
-              shell(paste(object@sumoBinPath, "netgenerate.exe"," --random-net --rand-iterations=", iterations[i], " -o=\"",pathOutputDir, name[i], "\"", sep=""))                
-            }
+            # Genero las redes, construyendo una función lambda que encapsula la llamada a
+            # netgenerate. La vectorización se realiza a partir de mapply
+            mapply(function(x,y,z){
+              shell(paste(object@sumoBinPath, "netgenerate.exe"," --random-net --rand-iterations=", x, " -o=\"",y, z, "\"", sep=""))   
+            }, iterations, pathOutputDir, name )            
             name
           }             
 )
@@ -199,13 +201,14 @@ setMethod("generateGridNet", "adminRSumo",
               name <- "net_"  
             }  
             name <- paste(name, 
-                          as.character(1:max(length(gridNumber), length(gridLength))),
+                          as.character(1:max(length(gridNumber), length(gridLength), length(name))),
                           ".net.xml",
                           sep="") 
-            #Implementar con mapply
-            for (i in 1:max(length(gridNumber), length(gridLength))){            
-              shell(paste(object@sumoBinPath, "netgenerate.exe"," --grid-net --grid-number=", gridNumber[i], " --grid-length=", gridLength[i],  " -o=\"",pathOutputDir, name[i], "\"", sep=""))                
-            }
+            # Genero las redes, construyendo una función lambda que encapsula la llamada a
+            # netgenerate. La vectorización se realiza a partir de mapply
+            mapply(function(w,x,y,z){
+              shell(paste(object@sumoBinPath, "netgenerate.exe"," --grid-net --grid-number=", w, " --grid-length=", x,  " -o=\"",y, z, "\"", sep=""))   
+            }, gridNumber, gridLength, pathOutputDir, name )
             name
           }             
 )
