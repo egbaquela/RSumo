@@ -43,10 +43,11 @@ setGeneric("removeTrip", function(object, tripIndex=NA, idTrip=NA){})
 setMethod("removeTrip", "trafficTrip",
           function(object, tripIndex=NA, idTrip=NA){
             if(!is.na(tripIndex)){
-              object@trips <- object@trips[-tripIndex] 
+              object@trips <- object@trips[-tripIndex,] 
             }else{
               object@trips <- object@trips[!(object@trips$id==idTrip)]
             }
+            object
           }
 )
 
@@ -74,7 +75,7 @@ setGeneric("generateRandomTrip", function(object, trafficNet, number,
 setMethod("generateRandomTrip", "trafficTrip", 
           function(object, trafficNet, number, depart){
             #Elimino todos los trips actuales.
-            removeTrip(object, 1:length(object@trip))
+            object<-removeTrip(object, 1:nrow(object@trip))
             #Inicio la generación de los trips aleatorios.
             namesOfEdges <-idEdges(trafficNet)
             origin <- sample(namesOfEdges, number, replace=TRUE)

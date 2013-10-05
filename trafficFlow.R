@@ -48,6 +48,7 @@ setMethod("removeFlow", "trafficFlow",
             }else{
               object@flows <- object@flows[!(object@flows$id==idFlow)]
             }
+            object
           }
 )
 
@@ -87,7 +88,7 @@ setGeneric("generateRandomFlow", function(object, trafficNet, number,
 setMethod("generateRandomFlow", "trafficFlow", 
           function(object, trafficNet, number, begin, end){
             #Elimino todos los flows actuales.
-            removeFlow(object, 1:length(object@flows))
+            object <- removeFlow(object, 1:nrow(object@flows))
             #Inicio la generación de los flows aleatorios.
             namesOfEdges <-idEdges(trafficNet)
             origin <- sample(namesOfEdges, number, replace=TRUE)
