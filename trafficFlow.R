@@ -77,6 +77,11 @@ setMethod("writeTrafficFlowToXML", "trafficFlow",
           }
 )
 
+
+# Ver el tema que voy a tener que asegurarme de unificar
+# el funcionamiento de generateRandomFlow y el de 
+# genereateRandomNet, el primero devuelve un objeto flow,
+# el segundo el nombre del archivo generado.
 setGeneric("generateRandomFlow", function(object, trafficNet, number,
                                           begin, end){})
 setMethod("generateRandomFlow", "trafficFlow", 
