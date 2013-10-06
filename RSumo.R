@@ -239,7 +239,11 @@ setGeneric("generateRoutesFromFlow",
            function(object, pathNet, pathFlow, pathOutput){})
 setMethod("generateRoutesFromFlow", "adminRSumo", 
           function(object, pathNet, pathFlow, pathOutput){
-            shell(paste(object@sumoBinPath, "duarouter.exe"," -n=\"", pathNet,"\"", " -f=\"", pathFlow,"\""," -o=\"", pathOutput,"\"", sep="")) 
-
+            # TODO: Unificar interface con los genradores de rutas, 
+            #que me devuelva el nombre.
+            mapply(function(x,y,z){
+              shell(paste(object@sumoBinPath, "duarouter.exe"," -n=\"", x,"\"", " -f=\"", y,"\""," -o=\"", z,"\"", sep=""))}, 
+              pathNet, pathFlow, pathOutput)
+            pathOutput
           } 
 )
