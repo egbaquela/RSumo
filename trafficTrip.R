@@ -56,12 +56,15 @@ setMethod("writeTrafficTripToXML", "trafficTrip",
           function(object, path){
             parentXMLNode <- xmlNode("trips")
             for (i in 1:nrow(object@trips)){
+              # Nota: para escribir los "from" y "to" a XML es necesario
+              # hacer un cast a character, ya que R los considera del tipo
+              # factor.
               childNode <- xmlNode("trip")
               childNode <- addAttributes(childNode, 
                                          id = object@trips$id[i],
                                          depart = object@trips$depart[i],
-                                         from = object@trips$from[i],
-                                         to = object@trips$to[i])
+                                         from = as.character(object@trips$from[i]),
+                                         to = as.character(object@trips$to[i]))
               parentXMLNode <- addChildren(parentXMLNode, 
                                            childNode) 
             }

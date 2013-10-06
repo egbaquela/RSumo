@@ -68,10 +68,13 @@ setMethod("writeTrafficFlowToXML", "trafficFlow",
             #  parentXMLNode <- addChildren(parentXMLNode, 
             #                               childNode) 
             #}
+            # Nota: para escribir los "from" y "to" a XML es necesario
+            # hacer un cast a character, ya que R los considera del tipo
+            # factor.
             childrenNodes <- rep(list(xmlNode("flow")), times=nrow(object@flows))
             childrenNodes <- mapply(addAttributes, childrenNodes, 
-                                 id = object@flows$id, from = object@flows$from,
-                                 to = object@flows$to,begin = object@flows$begin,
+                                 id = object@flows$id, from = as.character(object@flows$from),
+                                 to = as.character(object@flows$to), begin = object@flows$begin,
                                  end = object@flows$end,number = object@flows$number)
             parentXMLNode <- addChildren(node=parentXMLNode,kids=childrenNodes)
             saveXML(parentXMLNode, path)
