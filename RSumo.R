@@ -71,24 +71,30 @@ setMethod("runSimulationFromFiles", "adminRSumo",
     else{
       sumo<-"sumo.exe"
     }
-    command <- paste(object@sumoBinPath, sumo,sep="") 
-    command <- paste(command," --net-file=\"",pathNet, "\"", sep="")
-    command <- paste(command," --route-files=\"",pathRoute, "\"", sep="")
-    command <- paste(command, " --time-to-teleport=\"-1\"", sep="")
-    command <- paste(command, " --end=\"", endTime, "\"", sep="")
-    if (!is.na(pathOutputs)){
-      if (reportTripInfo){
-        command <- paste(command, " --tripinfo-output=\"", pathOutputs, "trips.trip.xml\"", sep="")
+    numIDReport <- 1:max(length(pathNet), length(pathRoute), length(endTime),
+                       length(pathOutputs))
+    mapply(function(net, route, end, dirOutputs, tripInfo, vehRoute, summaryRep, numID){
+      command <- paste(object@sumoBinPath, sumo,sep="") 
+      command <- paste(command," --net-file=\"",net, "\"", sep="")
+      command <- paste(command," --route-files=\"",route, "\"", sep="")
+      command <- paste(command, " --time-to-teleport=\"-1\"", sep="")
+      command <- paste(command, " --end=\"", end, "\"", sep="")
+      if (!is.na(dirOutputs)){
+        if (tripInfo){
+          command <- paste(command, " --tripinfo-output=\"", dirOutputs, numID, "-trips.trip.xml\"", sep="")
+        }
+        if (vehRoute){
+          command <- paste(command, " --vehroute-output=\"", dirOutputs, numID, "-vehRoute.vehr.xml\"", sep="")
+        }    
+        if (summaryRep){
+          command <- paste(command, " --summary=\"", dirOutputs, numID,"-summary.summ.xml\"", sep="")
+        }      
       }
-      if (reportVehRoute){
-        command <- paste(command, " --vehroute-output=\"", pathOutputs, "vehRoute.vehr.xml\"", sep="")
-      }    
-      if (reportSummary){
-        command <- paste(command, " --summary=\"", pathOutputs, "summary.summ.xml\"", sep="")
-      }      
-    }
-   
-    shell(command)    
+      #print(command)
+      shell(command)       
+      }, pathNet, pathRoute, endTime, pathOutputs, reportTripInfo, 
+           reportVehRoute, reportSummary ,numIDReport
+    )    
   }        
 )
 
