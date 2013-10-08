@@ -94,7 +94,7 @@ setMethod("runSimulationFromFiles", "adminRSumo",
       shell(command)       
       }, pathNet, pathRoute, endTime, pathOutputs, reportTripInfo, 
            reportVehRoute, reportSummary ,numIDReport
-    )    
+    )
   }        
 )
 
