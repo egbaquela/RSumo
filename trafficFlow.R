@@ -40,6 +40,30 @@ setMethod("appendFlow", "trafficFlow",
           }
 )
 
+setGeneric("addFlowsFromFile", function(object, path, append=FALSE, asText=FALSE){})
+setMethod("addFlowsFromFile", "trafficFlow", 
+          function(object, path, append=FALSE, asText=FALSE){
+            flows <- readSumoXML(path, asText) 
+            flows$id <- as.character(flows$id)            
+            flows$from <- as.character(flows$from)
+            flows$to <- as.character(flows$to)
+            flows$begin <- as.numeric(as.character(flows$begin))
+            flows$end <- as.numeric(as.character(flows$end))
+            flows$number <- as.numeric(as.character(flows$number))
+
+            
+            if (append==FALSE){
+              object@flows <- flows             
+            }
+            else{
+              object@flows <- rbind(object@flows, flows)
+            }
+            rownames(object@flows) <- seq(1:nrow(object@flows))
+            object
+          }
+)
+
+
 setGeneric("removeFlow", function(object, flowIndex=NA, idFlow=NA){})
 setMethod("removeFlow", "trafficFlow",
           function(object, flowIndex=NA, idFlow=NA){

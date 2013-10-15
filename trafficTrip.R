@@ -39,6 +39,26 @@ setMethod("appendTrip", "trafficTrip",
           }
 )
 
+setGeneric("addTripFromFile", function(object, path, append=FALSE, asText=FALSE){})
+setMethod("addTripFromFile", "trafficFlow", 
+          function(object, path, append=FALSE, asText=FALSE){
+            trips <- readSumoXML(path, asText) 
+            trips$id <- as.character(trips$id)            
+            trips$from <- as.character(trips$from)
+            trips$to <- as.character(trips$to)
+            trips$depart <- as.numeric(as.character(trips$depart))
+            
+            if (append==FALSE){
+              object@trips <- trips             
+            }
+            else{
+              object@trips <- rbind(object@trips, trips)
+            }
+            rownames(object@trips) <- seq(1:nrow(object@trips))
+            object
+          }
+)
+
 setGeneric("removeTrip", function(object, tripIndex=NA, idTrip=NA){})
 setMethod("removeTrip", "trafficTrip",
           function(object, tripIndex=NA, idTrip=NA){
