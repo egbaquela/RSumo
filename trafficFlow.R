@@ -40,9 +40,11 @@ setMethod("appendFlow", "trafficFlow",
           }
 )
 
-setGeneric("addFlowsFromFile", function(object, path, append=FALSE, asText=FALSE){})
+setGeneric("addFlowsFromFile", function(object, path, append=FALSE, asText=FALSE,
+                                        changeIdToPath=FALSE){})
 setMethod("addFlowsFromFile", "trafficFlow", 
-          function(object, path, append=FALSE, asText=FALSE){
+          function(object, path, append=FALSE, asText=FALSE, 
+                   changeIdToPath=FALSE){
             flows <- readSumoXML(path, asText) 
             flows$id <- as.character(flows$id)            
             flows$from <- as.character(flows$from)
@@ -57,6 +59,9 @@ setMethod("addFlowsFromFile", "trafficFlow",
             }
             else{
               object@flows <- rbind(object@flows, flows)
+            }
+            if (changeIdToPath==TRUE){
+              object@id = path
             }
             rownames(object@flows) <- seq(1:nrow(object@flows))
             object
