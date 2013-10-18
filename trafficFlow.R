@@ -26,6 +26,13 @@ trafficFlow <- function(id){
   object  
 }
 
+createTrafficFlowFromFile <- function(path){
+  flow <- trafficFlow(path)
+  flow <- addFlowsFromFile(flow, path)
+  flow
+}
+
+
 setGeneric("appendFlow", function(object, id, from, to, 
                                   begin, end, number){})
 setMethod("appendFlow", "trafficFlow", 
