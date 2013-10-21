@@ -145,3 +145,10 @@ setMethod("generateRandomFlow", "trafficFlow",
             object
           }
 )
+
+setGeneric("flows", function(object){})
+setMethod("flows", "trafficFlow",
+          function(object){
+            object@flow
+          }
+)
